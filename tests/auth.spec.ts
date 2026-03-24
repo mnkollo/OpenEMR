@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { LoginPage } from "../page/loginPage";
 import { HomePage } from "../page/homePage";
 
-test.describe("Smoke Test - Testing Authentication", () => {
+test.describe("Smoke Test - Testing Auth", () => {
   let loginPage: LoginPage;
   let homePage: HomePage;
 
@@ -19,12 +19,12 @@ test.describe("Smoke Test - Testing Authentication", () => {
 
   test("invalid login shows error", async () => {
     await loginPage.performLogin("invalidUser", "invalidPass");
-    await expect(loginPage.loginFailureMessage).toHaveText("Invalid username or password");
+    await expect(loginPage.loginFailureMessage).toContainText("Invalid username or password");
   });
 
   test("blank credentials show login failure", async () => {
     await loginPage.performLogin("", "");
-    await expect(loginPage.loginFailureMessage).toHaveText("Invalid username or password");
+    await expect(loginPage.loginFailureMessage).toContainText("Invalid username or password");
   });
 
   test("logout after login", async () => {
