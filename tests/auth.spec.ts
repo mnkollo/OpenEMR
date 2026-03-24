@@ -1,36 +1,35 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage } from "../page/loginPage";
-import dotenv from 'dotenv';
+import { HomePage } from "../page/homePage";
 
-dotenv.config();
-test.describe("Create Account Test", () => {
+test.describe("Testing Authentication", () => {
+  test.beforeEach(async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  await loginPage.goto();
+});
 
   test("valid login", async ({ page }) => {
     const loginPage = new LoginPage(page);
-    await loginPage.goto();
+    const homePage = new HomePage(page);
     await loginPage.performLogin(process.env.USERNAME!, process.env.PASSWORD!);
-    await expect(page).toHaveURL(/main/);
+    await expect(homePage.menuLabelDropdown).toBeVisible();
   })
   test("invalid login shows error", async ({ page }) => {
     const loginPage = new LoginPage(page);
-    await loginPage.goto();
     await loginPage.performLogin("invalidUser", "invalidPass");
-    const errorMessage = page.locator('.text-danger');
-    await expect(errorMessage).toBeVisible();
+    await expect(loginPage.loginFailureMessage).toHaveText('Invalid username or password');
   })
-  test('login with empty fields shows validation', async ({ page }) => {
+  test('blank credentials show login failure', async ({ page }) => {
     const loginPage = new LoginPage(page);
-    await loginPage.goto();
     await loginPage.performLogin("", "");
-    const errorMessage = page.locator('.text-danger');
-    await expect(errorMessage).toBeVisible();
+    await expect(loginPage.loginFailureMessage).toHaveText('Invalid username or password');
   });
   test('logout after login', async ({ page }) => {
     const loginPage = new LoginPage(page);
-    await loginPage.goto();
     await loginPage.performLogin(process.env.USERNAME!, process.env.PASSWORD!);
     await expect(page).toHaveURL(/main/);
-    await loginPage.performLogout();
-    await expect(page).toHaveURL(/login/);
+    const homePage = new HomePage(page);
+    await homePage.performLogout();
+    await expect(loginPage.loginForm).toBeVisible();
   })
 })
