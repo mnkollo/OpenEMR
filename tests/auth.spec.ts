@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { LoginPage } from "../page/loginPage";
 import { HomePage } from "../page/homePage";
 
-test.describe("Testing Authentication", () => {
+test.describe("Smoke Test - Testing Authentication", () => {
   let loginPage: LoginPage;
   let homePage: HomePage;
 
