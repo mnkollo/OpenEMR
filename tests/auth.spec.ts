@@ -13,7 +13,7 @@ test.describe("Smoke Test - Testing Auth", () => {
   });
 
   test("valid login", async () => {
-    await loginPage.performLogin(process.env.USERNAME, process.env.PASSWORD!);
+    await loginPage.performLogin('admin','pass');
     await expect(homePage.menuLabelDropdown).toBeVisible();
   });
 
