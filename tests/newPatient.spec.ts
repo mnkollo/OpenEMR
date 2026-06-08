@@ -3,6 +3,8 @@ import { LoginPage } from "../page/loginPage";
 import { HomePage } from "../page/homePage";
 import { PatientPage } from "../page/patientPage";
 import { buildPatientWhoData } from "../utils/fakerData";
+import dotenv from 'dotenv';
+dotenv.config();
 
 test.describe("Admin Test - Patient", () => {
 
@@ -16,7 +18,7 @@ test.describe("Admin Test - Patient", () => {
     const patientWhoData = buildPatientWhoData();
 
     await loginPage.goto();
-    await loginPage.performLogin("admin", "pass");
+    await loginPage.performLogin(process.env.USERNAME!, process.env.PASSWORD!);
     await expect(homePage.menuLabelDropdown).toBeVisible();
 
     await test.step("Navigate to New Patient Search", async () => {
