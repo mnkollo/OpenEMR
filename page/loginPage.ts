@@ -1,6 +1,8 @@
 
 import { Locator, Page } from '@playwright/test';
 import { BasePage } from './basePage';
+import { HomePage } from './homePage';
+
 
 export class LoginPage extends BasePage {
 
@@ -23,6 +25,8 @@ export class LoginPage extends BasePage {
     await this.page.goto(process.env.BASE_URL!);
   }
   async performLogin(username: string, password: string) {
+    const homePage = new HomePage(this.page);
+
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
     await this.loginButton.click();

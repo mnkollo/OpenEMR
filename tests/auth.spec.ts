@@ -2,32 +2,35 @@ import { test, expect } from "@playwright/test";
 import { LoginPage } from "../page/loginPage";
 import { HomePage } from "../page/homePage";
 
-test.describe("Smoke Test - Testing Auth", () => {
-  let loginPage: LoginPage;
-  let homePage: HomePage;
 
+test.describe("Smoke Test - Testing Auth", () => {
   test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    homePage = new HomePage(page);
+    const loginPage = new LoginPage(page);
     await loginPage.goto();
   });
 
-  test("valid login", async () => {
-    await loginPage.performLogin('admin','pass');
+  test("valid login", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const homePage = new HomePage(page);
+    await loginPage.performLogin(process.env.USERNAME, process.env.PASSWORD!);
     await expect(homePage.menuLabelDropdown).toBeVisible();
   });
 
-  test("invalid login shows error", async () => {
+  test("invalid login shows error", async ({ page }) => {
+    const loginPage = new LoginPage(page);
     await loginPage.performLogin("invalidUser", "invalidPass");
     await expect(loginPage.loginFailureMessage).toContainText("Invalid username or password");
   });
 
-  test("blank credentials show login failure", async () => {
+  test("blank credentials show login failure", async ({ page }) => {
+    const loginPage = new LoginPage(page);
     await loginPage.performLogin("", "");
     await expect(loginPage.loginFailureMessage).toContainText("Invalid username or password");
   });
 
-  test("logout after login", async () => {
+  test("logout after login", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const homePage = new HomePage(page);
     await loginPage.performLogin(process.env.USERNAME, process.env.PASSWORD!);
     await expect(homePage.menuLabelDropdown).toBeVisible();
     await homePage.performLogout();

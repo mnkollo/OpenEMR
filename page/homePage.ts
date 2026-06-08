@@ -17,4 +17,8 @@ export class HomePage extends BasePage {
     await this.menuLabelDropdown.click();
     await this.logoutButton.click();
   }
+
+  async selectPatientDropdown() {
+    await this.patientTab.click();
+  }
 }

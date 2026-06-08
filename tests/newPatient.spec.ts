@@ -2,21 +2,30 @@ import { test, expect } from "@playwright/test";
 import { LoginPage } from "../page/loginPage";
 import { HomePage } from "../page/homePage";
 import { PatientPage } from "../page/patientPage";
-test.describe("Admin Test - Patient", () => {
-  let loginPage: LoginPage;
-  let homePage: HomePage;
-  let patientPage: PatientPage;
+import { buildPatientWhoData } from "../utils/fakerData";
 
-  test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    homePage = new HomePage(page);
+test.describe("Admin Test - Patient", () => {
+
+  test.only(" patients- add new patient", async ({ page }) => {
+    // Initialize page objects
+    const loginPage = new LoginPage(page);
+    const homePage = new HomePage(page);
+    const patientPage = new PatientPage(page);
+
+    // Initialzie test data
+    const patientWhoData = buildPatientWhoData();
+
     await loginPage.goto();
     await loginPage.performLogin("admin", "pass");
     await expect(homePage.menuLabelDropdown).toBeVisible();
-  });
 
-  test(" patients-verify who section", async ({ page }) => {
-    patientPage = new PatientPage(page)
-    await patientPage.addNewPatient()
-  }); 
+    await test.step("Navigate to New Patient Search", async () => {
+      await homePage.selectPatientDropdown();
+      await patientPage.selectNewSearchTab();
+    });
+
+    await test.step("Fill out Who Section of New Patient form", async () => {
+      await patientPage.fillWhoSection(patientWhoData);
+    });
+  });
 });
