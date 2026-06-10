@@ -12,7 +12,7 @@ test.describe("Smoke Test - Testing Auth", () => {
   test("valid login", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const homePage = new HomePage(page);
-    await loginPage.performLogin(process.env.USERNAME, process.env.PASSWORD!);
+    await loginPage.performLogin(process.env.USERNAME!, process.env.PASSWORD!);
     await expect(homePage.menuLabelDropdown).toBeVisible();
   });
 

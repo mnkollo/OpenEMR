@@ -6,7 +6,7 @@ import { buildPatientWhoData } from "../utils/fakerData";
 import dotenv from 'dotenv';
 dotenv.config();
 
-test.describe("Admin Test - Patient", () => {
+test.describe("Admin Test - Fill New Patient Form", () => {
 
   test.only(" patients- add new patient", async ({ page }) => {
     // Initialize page objects
